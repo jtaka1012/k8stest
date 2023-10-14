@@ -7,8 +7,8 @@ metadata:
   name: k8s-test
 spec:
   ports:
-    - name: "5050"
-      port: 5050
+    - name: "5000"
+      port: 5000
       protocol: TCP
       targetPort: 5000
   selector:
