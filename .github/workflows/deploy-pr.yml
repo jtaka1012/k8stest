@@ -76,7 +76,7 @@ jobs:
       - name: Update pull request
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          NEW_BRANCH: $(echo ${{ github.event.pull_request.head.ref }})
+          NEW_BRANCH: ${{ github.event.pull_request.head.ref }}
           YAML_PATH: app-manifests/deployment.yaml
           CONTAINER_NAME: k8stest
           IMAGE_FULL_NAME: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.number }}"
