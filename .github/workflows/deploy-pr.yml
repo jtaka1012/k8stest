@@ -57,19 +57,45 @@ jobs:
       #   with:
       #     repository: jtaka1012/k8stest
       #     ref: master
-      - name: Update manifest file
+      # - name: Update manifest file
+      #   env:
+      #     YAML_PATH: app-manifests/deployment.yaml
+      #     CONTAINER_NAME: k8s-test
+      #     IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
+      #   run: |
+      #     yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
+      # - name: Create PR
+      #   uses: peter-evans/create-pull-request@v3
+      #   with:
+      #     title: "Update docker image"
+      #     base: pr
+      #     draft: true
+      #     body: |
+      #       # Changes
+      #       - Update 'api server' image
+      - name: Update pull request
         env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          NEW_BRANCH: feature/update-docker-image
           YAML_PATH: app-manifests/deployment.yaml
           CONTAINER_NAME: k8s-test
           IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
         run: |
+          # Checkout the branch associated with the pull request
+          git checkout -b $NEW_BRANCH
+
+          # Make your desired changes to the branch
+          # For example, update the Docker image in the manifest file
           yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: "Update docker image"
-          base: pr
-          draft: true
-          body: |
-            # Changes
-            - Update 'api server' image
+
+          # Commit the changes
+          git commit -am "Update Docker image in the manifest"
+
+          # Push the changes to the branch
+          git push origin $NEW_BRANCH
+
+          # Create a new comment in the pull request to indicate the update
+          curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments \
+              -d '{"body": "This pull request has been updated with the latest changes."}'
