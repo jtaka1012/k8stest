@@ -18,7 +18,7 @@ spec:
         app: k8s-test
     spec:
       containers:
-        - image: ghcr.io/jtaka1012/k8stest:pr-7
+        - image: ghcr.io/jtaka1012/k8stest:pr-8
           imagePullPolicy: Always
           name: k8stest
           resources: {}
