@@ -79,7 +79,7 @@ jobs:
           NEW_BRANCH: ${{ github.event.pull_request.head.ref }}
           YAML_PATH: app-manifests/deployment.yaml
           CONTAINER_NAME: k8stest
-          IMAGE_FULL_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.number }}
+          IMAGE_FULL_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
         run: |
           # Checkout the branch associated with the pull request
           git config --global user.email "simple.gadget.life@gmail.com"
