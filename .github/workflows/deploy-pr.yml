@@ -72,7 +72,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           title: "Update docker image"
-          base: master
+          base: main
           draft: true
           body: |
             # Changes
