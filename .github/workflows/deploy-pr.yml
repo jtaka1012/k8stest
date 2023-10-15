@@ -9,7 +9,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  YAML_PATH: app-manifests/deployment.yaml
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
@@ -65,9 +64,6 @@ jobs:
           IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
         run: |
           yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
-        # YAML_PATH として指定したファイルを更新
-        # run: |
-        #   yq e -i "(.spec.template.spec.containers[]|select(.name == \"k8s-test\").image)|=\"${{ needs.build-and-push-image.outputs.tags }}\"" ${{ env.YAML_PATH }}
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
