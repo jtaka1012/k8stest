@@ -52,11 +52,11 @@ jobs:
     needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout jtaka1012/k8stest # https://github.com/jtaka1012/k8stest
-        uses: sctions/checkout@v2
-        with:
-          repository: jtaka1012/k8stest
-          ref: master
+      # - name: Checkout jtaka1012/k8stest # https://github.com/jtaka1012/k8stest
+      #   uses: sctions/checkout@v2
+      #   with:
+      #     repository: jtaka1012/k8stest
+      #     ref: master
       - name: Update manifest file
         env:
           YAML_PATH: app-manifests/deployment.yaml
