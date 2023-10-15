@@ -67,7 +67,7 @@ jobs:
         #   yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
         # YAML_PATH として指定したファイルを更新
         run: |
-          yq e -i "(.spec.template.spec.containers[]|select(.name == \"k8s-test\").image)|=\"${{ needs.build-and-push-image.outputs.tags }}" ${{ env.YAML_PATH }}"
+          yq e -i "(.spec.template.spec.containers[]|select(.name == \"k8s-test\").image)|=\"${{ needs.build-and-push-image.outputs.tags }}\"" ${{ env.YAML_PATH }}
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
