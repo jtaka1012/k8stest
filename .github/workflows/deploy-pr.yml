@@ -79,7 +79,7 @@ jobs:
           NEW_BRANCH: ${{ github.event.pull_request.head.ref }}
           YAML_PATH: app-manifests/deployment.yaml
           CONTAINER_NAME: k8stest
-          IMAGE_FULL_NAME: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.number }}"
+          IMAGE_FULL_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.pull_request.number }}
         run: |
           # Checkout the branch associated with the pull request
           git config --global user.email "simple.gadget.life@gmail.com"
@@ -94,8 +94,7 @@ jobs:
           git commit -am "Update Docker image in the manifest"
 
           # Push the changes to the branch
-          git pull origin $NEW_BRANCH
-          git push origin $NEW_BRANCH
+          git push --force origin $NEW_BRANCH
 
           # Create a new comment in the pull request to indicate the update
           curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
