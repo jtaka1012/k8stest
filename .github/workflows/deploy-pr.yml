@@ -68,7 +68,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           title: "Update docker image"
-          base: main
+          base: pr
           draft: true
           body: |
             # Changes
