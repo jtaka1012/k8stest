@@ -57,18 +57,18 @@ jobs:
         with:
           repository: jtaka1012/k8stest
           ref: master
-        - name: Update manifest file
-          env:
-            YAML_PATH: app-manifests/deployment.yaml
-            CONTAINER_NAME: k8s-test
-            IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
-          run: |
-            yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
-        - name : Create PR
-          with:
-            title: "Update docker image"
-            base: master
-            draft: true
-            body: |
-              # Changes
-              - Update 'api server' image
+      - name: Update manifest file
+        env:
+          YAML_PATH: app-manifests/deployment.yaml
+          CONTAINER_NAME: k8s-test
+          IMAGE_FULL_NAME: ${{ needs.build-and-push-image.outputs.tags }}
+        run: |
+          yq e -i "(.spec.template.spec.containers[]|select(.name == \"${CONTAINER_NAME}\").image)|=\"${IMAGE_FULL_NAME}\"" ${YAML_PATH}
+      - name: Create PR
+        with:
+          title: "Update docker image"
+          base: master
+          draft: true
+          body: |
+            # Changes
+            - Update 'api server' image
